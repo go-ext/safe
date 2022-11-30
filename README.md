@@ -10,9 +10,8 @@
 ## Introduction
 syncsafe package provides synchronization mechanisms similar to native sync package but in more defensive way.
 
-- WaitGroup implementation gives you a way of waiting with context addressing the risk of indefinite hanging because of
-stuck jobs inside whatever reasons are.
-- TaggedWaitGroup provides a way of having more insights on pending counters tagging every Add operation.
+  - WaitGroup implementation gives you a way of waiting with context addressing the risk of indefinite hanging because of stuck jobs inside whatever reasons are.
+  - TaggedWaitGroup provides a way of having more insights on pending counters tagging every Add operation.
 
 ## Usage
 ### Installation
