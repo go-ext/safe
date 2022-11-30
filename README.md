@@ -5,10 +5,14 @@
 [![GoDoc](https://godoc.org/github.com/askretov/timex?status.svg)](https://godoc.org/github.com/askretov/timex)
 [![Licenses](https://img.shields.io/badge/license-mit-brightgreen.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
-# syncsafe
+# sync.safe 🛟
 
 ## Introduction
-syncsafe package provides synchronization mechanisms similar to native sync package but in more defensive way
+syncsafe package provides synchronization mechanisms similar to native sync package but in more defensive way.
+
+- WaitGroup implementation gives you a way of waiting with context addressing the risk of indefinite hanging because of
+stuck jobs inside whatever reasons are.
+- TaggedWaitGroup provides a way of having more insights on pending counters tagging every Add operation.
 
 ## Usage
 ### Installation
@@ -22,12 +26,25 @@ defer cancel()
 wg := NewWaitGroup()
 for i := 0; i < 3; i++ {
     wg.Add(1)
-    go func() {
+    go func(int i) {
         defer wg.Done()
         time.Sleep(time.Second * time.Duration(i))
-    }()
+    }(i)
 }
 if err := wg.WaitContext(ctx); err != nil {
     log.Fatal(err, err.StackTrace())
 }
+```
+### TaggedWaitGroup examples
+```go
+wg := NewTaggedWaitGroup()
+doneCalcJob := wg.Add("calculate-job", 1)
+doneSendJob := wg.Add("send-job", 1)
+go func() {
+    // After a while
+    doneCalcJob()
+    fmt.Println(wg.Counters()) // Will print map[send-job:1]
+    doneSendJob()
+}()
+wg.Wait()
 ```
