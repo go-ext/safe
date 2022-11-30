@@ -1,3 +1,4 @@
+// Package syncsafe package provides synchronization mechanisms similar to native sync package but in more defensive way
 package syncsafe
 
 import (
