@@ -24,10 +24,10 @@ func ExampleWaitGroup_WaitContext() {
 	wg := NewWaitGroup()
 	for i := 0; i < 3; i++ {
 		wg.Add(1)
-		go func() {
+		go func(i int) {
 			defer wg.Done()
 			time.Sleep(time.Second * time.Duration(i))
-		}()
+		}(i)
 	}
 	if err := wg.WaitContext(ctx); err != nil {
 		log.Fatal(err, err.StackTrace())
@@ -40,14 +40,14 @@ func ExampleWaitGroup_WaitChan() {
 	wg := NewWaitGroup()
 	for i := 0; i < 3; i++ {
 		wg.Add(1)
-		go func() {
+		go func(i int) {
 			defer wg.Done()
 			time.Sleep(time.Second * 2)
-		}()
+		}(i)
 	}
 	select {
 	case <-wg.WaitChan():
 	case <-ctx.Done():
-		log.Fatal("context cancelled before wait ends")
+		log.Fatal("context cancelled before wait group done")
 	}
 }
