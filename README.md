@@ -1,5 +1,5 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/go-ext/syncsafe)](https://goreportcard.com/report/github.com/go-ext/syncsafe)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/eff211f4bfa14af0ac69c8e0c08f1c90)](https://www.codacy.com/gh/go-ext/syncsafe/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=go-ext/syncsafe&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/e6db5e12ee7647509fe5bb4411b27ec9)](https://www.codacy.com/gh/go-ext/syncsafe/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=go-ext/syncsafe&amp;utm_campaign=Badge_Grade)
 ![CI](https://github.com/go-ext/syncsafe/actions/workflows/ci.yml/badge.svg)
 [![codecov](https://codecov.io/gh/go-ext/syncsafe/branch/main/graph/badge.svg?token=ZNB6FL3YOD)](https://codecov.io/gh/go-ext/syncsafe)
 [![GoDoc](https://godoc.org/github.com/askretov/timex?status.svg)](https://godoc.org/github.com/askretov/timex)
