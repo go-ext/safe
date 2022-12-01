@@ -2,6 +2,7 @@ package syncsafe
 
 import (
 	"context"
+	"sync"
 	"sync/atomic"
 
 	"github.com/pkg/errors"
@@ -13,17 +14,21 @@ import (
 type WaitGroup struct {
 	cnt  int64
 	done chan struct{}
+	lck  *sync.Mutex
 }
 
 // NewWaitGroup returns a new instance of WaitGroup
 func NewWaitGroup() *WaitGroup {
 	return &WaitGroup{
 		done: make(chan struct{}),
+		lck:  &sync.Mutex{},
 	}
 }
 
 // adds delta to the wait group
 func (g *WaitGroup) add(delta int64) {
+	g.lck.Lock()
+	defer g.lck.Unlock()
 	v := atomic.AddInt64(&g.cnt, delta)
 	switch {
 	case v == 0:

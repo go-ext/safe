@@ -1,7 +1,17 @@
-# syncsafe
+[![Go Report Card](https://goreportcard.com/badge/github.com/go-ext/syncsafe)](https://goreportcard.com/report/github.com/go-ext/syncsafe)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/e6db5e12ee7647509fe5bb4411b27ec9)](https://www.codacy.com/gh/go-ext/syncsafe/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=go-ext/syncsafe&amp;utm_campaign=Badge_Grade)
+![CI](https://github.com/go-ext/syncsafe/actions/workflows/ci.yml/badge.svg)
+[![codecov](https://codecov.io/gh/go-ext/syncsafe/branch/main/graph/badge.svg?token=ZNB6FL3YOD)](https://codecov.io/gh/go-ext/syncsafe)
+[![GoDoc](https://godoc.org/github.com/askretov/timex?status.svg)](https://godoc.org/github.com/askretov/timex)
+[![Licenses](https://img.shields.io/badge/license-mit-brightgreen.svg)](https://opensource.org/licenses/BSD-3-Clause)
+
+# sync.safe 🛟
 
 ## Introduction
-syncsafe package provides synchronization mechanisms similar to native sync package but in more defensive way
+syncsafe package provides synchronization mechanisms similar to native sync package but in more defensive way.
+
+-  WaitGroup implementation gives you a way of waiting with context addressing the risk of indefinite hanging because of stuck jobs inside whatever reasons are.
+-  TaggedWaitGroup provides a way of having more insights on pending counters tagging every Add operation.
 
 ## Usage
 ### Installation
@@ -15,12 +25,25 @@ defer cancel()
 wg := NewWaitGroup()
 for i := 0; i < 3; i++ {
     wg.Add(1)
-    go func() {
+    go func(int i) {
         defer wg.Done()
         time.Sleep(time.Second * time.Duration(i))
-    }()
+    }(i)
 }
 if err := wg.WaitContext(ctx); err != nil {
     log.Fatal(err, err.StackTrace())
 }
+```
+### TaggedWaitGroup examples
+```go
+wg := NewTaggedWaitGroup()
+doneCalcJob := wg.Add("calculate-job", 1)
+doneSendJob := wg.Add("send-job", 1)
+go func() {
+    // After a while
+    doneCalcJob()
+    fmt.Println(wg.Counters()) // Will print map[send-job:1]
+    doneSendJob()
+}()
+wg.Wait()
 ```
